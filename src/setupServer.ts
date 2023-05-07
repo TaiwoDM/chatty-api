@@ -22,6 +22,8 @@ import "express-async-errors";
 const compression = require("compression");
 const HTTP_STATUS = require("http-status-code");
 
+const SERVER_PORT = 5000;
+
 export class Server {
   private app: Application; // creates an instance of the express app
 
@@ -71,9 +73,21 @@ export class Server {
 
   private globalErrorHandler(app: Application): void {}
 
-  private startServer(app: Application): void {}
+  private async startServer(app: Application): Promise<void> {
+    try {
+      const httpServer: http.Server = new http.Server(app);
+      // Passing httpServer into startHttpServer method
+      this.startHttpServer(httpServer);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   private createSocketIO(httpServer: http.Server): void {}
 
-  private startHttpServer(httpServer: http.Server): void {}
+  private startHttpServer(httpServer: http.Server): void {
+    httpServer.listen(SERVER_PORT, () => {
+      console.log(`Server has started on port ${SERVER_PORT}`);
+    });
+  }
 }
