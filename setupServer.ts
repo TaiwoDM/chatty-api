@@ -13,6 +13,15 @@ import {
 
 import http from "http";
 
+import cors from "cors";
+import helmet from "helmet";
+import hpp from "hpp";
+import cookieSession from "cookie-session";
+import "express-async-errors";
+
+const compression = require("compression");
+const HTTP_STATUS = require("http-status-code");
+
 export class Server {
   private app: Application; // creates an instance of the express app
 
@@ -28,9 +37,35 @@ export class Server {
     this.startServer(this.app);
   }
 
-  private securityMiddleware(app: Application): void {}
+  private securityMiddleware(app: Application): void {
+    app.use(
+      cors({
+        origin: "*",
+        credentials: true,
+        optionsSuccessStatus: 200,
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      })
+    );
+    app.use(
+      cookieSession({
+        name: "session",
+        keys: ["test1", "test2"],
+        maxAge: 24 * 7 * 3600000,
+        secure: false,
+      })
+    );
+    app.use(hpp());
+    app.use(helmet());
+  }
 
-  private standardMiddleware(app: Application): void {}
+  private standardMiddleware(app: Application): void {
+    app.use(compression());
+    app.use(
+      json({
+        limit: "50mb",
+      })
+    );
+  }
 
   private routeMiddleware(app: Application): void {}
 
