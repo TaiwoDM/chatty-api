@@ -22,6 +22,8 @@ import "express-async-errors";
 const compression = require("compression");
 const HTTP_STATUS = require("http-status-code");
 
+import { config } from "./config";
+
 const SERVER_PORT = 5000;
 
 export class Server {
@@ -42,7 +44,7 @@ export class Server {
   private securityMiddleware(app: Application): void {
     app.use(
       cors({
-        origin: "*",
+        origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -51,9 +53,9 @@ export class Server {
     app.use(
       cookieSession({
         name: "session",
-        keys: ["test1", "test2"],
+        keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 24 * 7 * 3600000,
-        secure: false,
+        secure: config.NODE_ENV !== "development",
       })
     );
     app.use(hpp());
