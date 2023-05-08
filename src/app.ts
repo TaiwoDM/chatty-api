@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 
-import { Server } from "./setupServer.js";
+import { Server } from "./setupServer";
 
 class Application {
   public initialize(): void {
