@@ -1,9 +1,13 @@
 import express, { Express } from "express";
 
+import databaseConnection from "./setupDatabase";
+
 import { Server } from "./setupServer";
 
 class Application {
   public initialize(): void {
+    databaseConnection(); // connect to database
+
     // create an instance of the express Application
     const app: Express = express();
 
