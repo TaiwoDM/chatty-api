@@ -4,7 +4,7 @@ import databaseConnection from "./setupDatabase";
 
 import { config } from "./config";
 
-import { Server } from "./setupServer";
+import { ChattyServer } from "./setupServer";
 
 class Application {
   public initialize(): void {
@@ -15,7 +15,7 @@ class Application {
     const app: Express = express();
 
     // pas express Application to the constructor of the instance of the Server class
-    const server: Server = new Server(app);
+    const server: ChattyServer = new ChattyServer(app);
 
     server.start();
   }
